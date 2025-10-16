@@ -1,4 +1,5 @@
 use chrono::{NaiveDate, Utc};
+use colored::*;
 
 use crate::models::{Priority, Task};
 use crate::{clear_terminal, read_string};
@@ -130,8 +131,14 @@ impl TaskManager {
         for (index, task) in self.tasks.iter().enumerate() {
             println!("{} - {}", index, task.show());
         }
+
         match read_string("Digite o índice da tarefa").parse::<usize>() {
             Ok(index) => {
+                if index >= self.tasks.len() {
+                    println!("{}", "Índice inválido".to_string().red().bold());
+                    return;
+                }
+
                 self.tasks.remove(index);
                 println!("Tarefa excluída com sucesso");
             }
