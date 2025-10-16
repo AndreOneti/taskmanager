@@ -4,6 +4,8 @@ use colored::*;
 use crate::models::{Priority, Task};
 use crate::{clear_terminal, read_string};
 
+const FILE_PATH: &str = "tasks.json";
+
 pub struct TaskManager {
     pub tasks: Vec<Task>,
 }
@@ -17,14 +19,14 @@ impl TaskManager {
 
     pub fn save(&self) {
         println!("Salvando tarefas...");
-        let tasks_str = match serde_json::to_string(&self.tasks) {
+        let tasks_str = match serde_json::to_string_pretty(&self.tasks) {
             Ok(tasks) => tasks,
             Err(err) => {
                 println!("Erro ao serializar tarefas: {}", err);
                 return;
             }
         };
-        match std::fs::write("tasks.json", tasks_str) {
+        match std::fs::write(FILE_PATH, tasks_str) {
             Ok(_) => {
                 println!("Tarefas salvas com sucesso");
             }
@@ -37,7 +39,7 @@ impl TaskManager {
 
     pub fn load() -> Vec<Task> {
         println!("Carregando tarefas...");
-        let tasks_str = match std::fs::read_to_string("tasks.json") {
+        let tasks_str = match std::fs::read_to_string(FILE_PATH) {
             Ok(tasks_str) => tasks_str,
             Err(err) => {
                 println!("Erro ao carregar tarefas: {}", err);

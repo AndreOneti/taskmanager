@@ -1,1 +1,10 @@
-[{"title":"Minha primeira task","description":"Minha primeira descrição de task","category":"Estudos","date":"2026-10-15","priority":"Low","status":"Pending"}]
+[
+  {
+    "title": "Minha primeira task",
+    "description": "Minha primeira descrição de task",
+    "category": "Estudos",
+    "date": "2026-10-15",
+    "priority": "Low",
+    "status": "Pending"
+  }
+]
