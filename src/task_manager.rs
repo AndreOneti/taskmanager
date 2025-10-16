@@ -26,6 +26,7 @@ impl TaskManager {
                 return;
             }
         };
+
         match std::fs::write(FILE_PATH, tasks_str) {
             Ok(_) => {
                 println!("Tarefas salvas com sucesso");
