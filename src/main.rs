@@ -51,10 +51,22 @@ fn main() {
         let option = read_string("Escolha uma opção");
 
         match option.trim() {
-            "1" => mgr.add_task(),
-            "2" => mgr.list_tasks(),
-            "3" => mgr.finish_task(),
-            "4" => mgr.delete_task(),
+            "1" => {
+                let _ = clear_terminal();
+                mgr.add_task();
+            }
+            "2" => {
+                let _ = clear_terminal();
+                mgr.list_tasks();
+            }
+            "3" => {
+                let _ = clear_terminal();
+                mgr.finish_task();
+            }
+            "4" => {
+                let _ = clear_terminal();
+                mgr.delete_task();
+            }
             "5" => {
                 mgr.save();
                 println!("Obrigado por usar o gerenciador de tarefas");

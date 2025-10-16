@@ -2,7 +2,7 @@ use chrono::{NaiveDate, Utc};
 use colored::*;
 
 use crate::models::{Priority, Task};
-use crate::{clear_terminal, read_string};
+use crate::read_string;
 
 const FILE_PATH: &str = "tasks.json";
 
@@ -58,7 +58,6 @@ impl TaskManager {
     }
 
     pub fn add_task(&mut self) {
-        let _ = clear_terminal();
         let title = read_string("Titulo");
         let description = read_string("Descrição");
         let category = read_string("Categoria");
@@ -83,7 +82,6 @@ impl TaskManager {
     }
 
     pub fn list_tasks(&self) {
-        let _ = clear_terminal();
         println!("Listando tarefas...");
 
         if self.tasks.is_empty() {
@@ -92,19 +90,18 @@ impl TaskManager {
         }
 
         for task in &self.tasks {
-            println!("{}", task.show());
+            println!("{}", task);
         }
     }
 
     pub fn finish_task(&mut self) {
-        let _ = clear_terminal();
         if self.tasks.is_empty() {
             println!("Nenhuma tarefa encontrada");
             return;
         }
 
         for (index, task) in self.tasks.iter().enumerate() {
-            println!("{} - {}", index, task.show());
+            println!("{} - {}", index, task);
         }
         let index = read_string("Digite o índice da tarefa").parse::<usize>();
         let task = match index {
@@ -125,14 +122,13 @@ impl TaskManager {
     }
 
     pub fn delete_task(&mut self) {
-        let _ = clear_terminal();
         if self.tasks.is_empty() {
             println!("Nenhuma tarefa encontrada");
             return;
         }
 
         for (index, task) in self.tasks.iter().enumerate() {
-            println!("{} - {}", index, task.show());
+            println!("{} - {}", index, task);
         }
 
         match read_string("Digite o índice da tarefa").parse::<usize>() {
@@ -149,5 +145,24 @@ impl TaskManager {
                 println!("Opção inválida");
             }
         };
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::models::Status;
+
+    #[test]
+    fn test_task_manager() {
+        let mut manager = TaskManager::new();
+        manager.tasks.push(Task::new(
+            "Teste".to_string(),
+            "Teste".to_string(),
+            "Teste".to_string(),
+            Utc::now().date_naive(),
+            Priority::Medium,
+        ));
+        assert_eq!(manager.tasks[0].status, Status::Pending);
     }
 }
