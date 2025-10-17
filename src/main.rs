@@ -39,14 +39,14 @@ fn main() {
                 .underline()
         );
         println!("{}", "======================".to_string().purple().bold());
-        println!("");
+        println!(" ");
 
         print_yellow("1) Adicionar tarefa");
         print_yellow("2) Listar tarefas");
         print_yellow("3) Marcar como finalizada");
         print_yellow("4) Deletar tarefa");
         print_yellow("5) Sair");
-        println!("");
+        println!(" ");
 
         let option = read_string("Escolha uma opção");
 

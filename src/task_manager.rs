@@ -33,7 +33,6 @@ impl TaskManager {
             }
             Err(err) => {
                 println!("Erro ao salvar tarefas: {}", err);
-                return;
             }
         }
     }
@@ -52,7 +51,7 @@ impl TaskManager {
             Ok(tasks) => tasks,
             Err(err) => {
                 println!("Erro ao carregar tarefas: {}", err);
-                return Vec::new();
+                Vec::new()
             }
         }
     }
