@@ -68,12 +68,18 @@ fn main() {
                 mgr.delete_task();
             }
             "5" => {
-                mgr.save();
-                println!("Obrigado por usar o gerenciador de tarefas");
+                match mgr.save() {
+                    Ok(_) => println!("Obrigado por usar o gerenciador de tarefas"),
+                    Err(e) => println!("Erro ao salvar tarefas: {}", e),
+                }
+
                 break;
             }
             _ => {
-                mgr.save();
+                match mgr.save() {
+                    Ok(_) => println!("Obrigado por usar o gerenciador de tarefas"),
+                    Err(e) => println!("Erro ao salvar tarefas: {}", e),
+                }
                 println!("Opção inválida.");
                 break;
             }

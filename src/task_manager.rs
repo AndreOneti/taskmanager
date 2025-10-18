@@ -1,7 +1,7 @@
 use chrono::{NaiveDate, Utc};
 use colored::*;
 
-use crate::models::{Priority, Task};
+use crate::models::{Priority, Task, TaskError};
 use crate::read_string;
 
 const FILE_PATH: &str = "tasks.json";
@@ -17,24 +17,12 @@ impl TaskManager {
         }
     }
 
-    pub fn save(&self) {
+    pub fn save(&self) -> Result<(), TaskError> {
         println!("Salvando tarefas...");
-        let tasks_str = match serde_json::to_string_pretty(&self.tasks) {
-            Ok(tasks) => tasks,
-            Err(err) => {
-                println!("Erro ao serializar tarefas: {}", err);
-                return;
-            }
-        };
+        let tasks_str = serde_json::to_string_pretty(&self.tasks)?;
+        std::fs::write(FILE_PATH, tasks_str)?;
 
-        match std::fs::write(FILE_PATH, tasks_str) {
-            Ok(_) => {
-                println!("Tarefas salvas com sucesso");
-            }
-            Err(err) => {
-                println!("Erro ao salvar tarefas: {}", err);
-            }
-        }
+        Ok(())
     }
 
     pub fn load() -> Vec<Task> {

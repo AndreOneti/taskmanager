@@ -8,8 +8,12 @@ use std::io::{Result, Write, stdout};
 
 pub fn read_string(prompt: &str) -> String {
     print!("{}: ", prompt.to_string().green());
-    std::io::stdout().flush().unwrap();
+    std::io::stdout()
+        .flush()
+        .unwrap_or_else(|_| println!("Erro de flush, continuando"));
+
     let mut buffer = String::new();
+
     match std::io::stdin().read_line(&mut buffer) {
         Ok(_) => buffer.trim().to_string(),
         Err(_) => {

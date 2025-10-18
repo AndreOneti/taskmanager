@@ -1,6 +1,6 @@
 use chrono::{NaiveDate, Utc};
 use serde::{Deserialize, Serialize};
-use std::fmt::Display;
+use std::{error::Error, fmt::Display};
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub enum Priority {
@@ -64,5 +64,34 @@ impl Display for Task {
             self.title,
             self.date.format("%d-%m-%Y")
         )
+    }
+}
+
+#[derive(Debug)]
+pub enum TaskError {
+    FileIoError(String),
+    DeserializeError(String),
+}
+
+impl Display for TaskError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            TaskError::FileIoError(msg) => write!(f, "Error read or write file: {}", msg),
+            TaskError::DeserializeError(msg) => write!(f, "Error deserializing file: {}", msg),
+        }
+    }
+}
+
+impl Error for TaskError {}
+
+impl From<std::io::Error> for TaskError {
+    fn from(err: std::io::Error) -> Self {
+        TaskError::FileIoError(err.to_string())
+    }
+}
+
+impl From<serde_json::Error> for TaskError {
+    fn from(err: serde_json::Error) -> Self {
+        TaskError::DeserializeError(err.to_string())
     }
 }
